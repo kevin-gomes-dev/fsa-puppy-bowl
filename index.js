@@ -221,9 +221,7 @@ function playerListItem(player) {
   $li.innerHTML = `
   <a href="#selected"><img src="${player.imageUrl}" alt = "${player.name} - "/>${player.name}</a>
   `;
-  $li.querySelector("a").addEventListener("click", () => {
-    return setSelectedPlayer(player.id);
-  });
+  $li.querySelector("a").addEventListener("click", () => setSelectedPlayer(player.id));
   return $li;
 }
 
