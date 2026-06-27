@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.center {
+  text-align: center;
+}
+
+h1 {
+  margin: 0.3rem;
+}
+
+.players {
+  display: grid;
+  gap: 1ch;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.players a {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  padding: 1ch;
+  text-decoration: none;
+  color: black;
+}
+
+.players a:hover {
+  background: #eee;
+  font-style: italic;
+}
+
+.players li.selected {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.players img {
+  height: 70px;
+}
+
+@media (width >= 600px) {
+  main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+main {
+  display: grid;
+  gap: 1rem;
+}
+
+form {
+  display: grid;
+  gap: 1ch;
+  padding: 0 1rem;
+}
+
+label {
+  display: grid;
+}
+
+#selected img {
+  width: 20%;
+  margin: auto;
+  display: block;
+}
+
+#selected button {
+  margin: auto;
+  display: block;
+  img {
+    width: 200px;
+  }
+}
+
+#addPlayerForm {
+  width: 20%;
+  text-align: center;
+}
