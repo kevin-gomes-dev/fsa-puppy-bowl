@@ -43,7 +43,7 @@ h1 {
 
 @media (width >= 600px) {
   main {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 4fr;
   }
 }
 

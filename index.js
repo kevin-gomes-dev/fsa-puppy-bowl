@@ -121,9 +121,6 @@ async function resetData() {
   players.forEach(async (player) => {
     await deletePlayer(player.id);
   });
-  // teams.forEach(async (team) => {
-  //   await deleteTeam()
-  // })
   await getPlayers(BASE + DEFAULT_COHORT + PLAYER_RESOURCE);
   getTeams(BASE + DEFAULT_COHORT + TEAM_RESOURCE);
   players.forEach((player) => {
@@ -136,7 +133,7 @@ async function resetData() {
  * Returns an HTML form with a submit button and varying amount of label/input pairs
  * @param {string} submitTitle The text to show on the submit button
  * @param  {...any} inputs An input object. Requires a "name" property.
- * Optional type, required, value, altLabel properties
+ * Optional type, required, value, altLabel, checked (for radio/checkbox) properties
  * @returns {HTMLFormElement}
  */
 function createGenericForm(submitTitle, ...inputs) {
@@ -147,6 +144,7 @@ function createGenericForm(submitTitle, ...inputs) {
     $label.textContent = input.altLabel ? input.altLabel : input.name[0].toUpperCase() + input.name.substring(1);
     $input.name = input.name;
     if (input.type) $input.type = input.type;
+    if (input.checked) $input.checked = input.checked;
     $input.required = input.required ? true : false;
     $input.value = input.value ? input.value : "";
     $label.append($input);
@@ -164,16 +162,41 @@ function createGenericForm(submitTitle, ...inputs) {
 function addPlayerForm() {
   // Prevent error when teams hasn't yet loaded before the form
   if (teams.length === 0) return;
-  const $form = createGenericForm(
-    "🥳Add🥳",
+  const formFields = [
     { name: "name", required: true },
     { name: "breed", required: true },
-    { name: "status", type: "radio", value: "bench", altLabel: "Bench Status" },
+    { name: "status", type: "radio", value: "bench", altLabel: "Bench Status", checked: "checked" },
     { name: "status", type: "radio", value: "field", altLabel: "Field Status" },
     { name: "imageUrl" },
-    { name: "teamId", type: "radio", value: teams[0].id, altLabel: "Team " + teams[0].name },
-    { name: "teamId", type: "radio", value: teams[1].id, altLabel: "Team " + teams[1].name },
-  );
+  ];
+  // for (const team of teams)
+  //   formFields.push({ name: "teamId", type: "radio", value: team.id, altLabel: "Team " + team.name });
+  const $form = createGenericForm("🥳Add🥳", ...formFields);
+
+  // Remove the submit to allow adding more different fields
+  const $submit = $form.removeChild($form.children[$form.length - 1]);
+
+  const $teamLabel = document.createElement("label");
+  $teamLabel.textContent = "Which team:";
+  $form.append($teamLabel);
+
+  const $select = document.createElement("select");
+  $select.name = "teamId";
+  // Default option
+  const $defaultOption = document.createElement("option");
+  $defaultOption.value = "";
+  $defaultOption.textContent = "Unassigned";
+  $select.append($defaultOption);
+
+  // Teams
+  teams.forEach((team) => {
+    const $option = document.createElement("option");
+    $option.value = team.id;
+    $option.textContent = team.name;
+    $select.append($option);
+  });
+  $form.append($select);
+
   $form.id = "addPlayerForm";
   $form.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -182,6 +205,7 @@ function addPlayerForm() {
     for (const key of formData.keys()) player[key] = formData.get(key);
     addPlayer(player);
   });
+  $form.append($submit);
   return $form;
 }
 
@@ -195,7 +219,7 @@ function playerListItem(player) {
   if (player.id === selectedPlayer?.id) $li.classList.add("selected");
 
   $li.innerHTML = `
-  <a href="#selected"><img src="${player.imageUrl}" alt = "${player.name}"/>${player.name}</a>
+  <a href="#selected"><img src="${player.imageUrl}" alt = "${player.name} - "/>${player.name}</a>
   `;
   $li.querySelector("a").addEventListener("click", () => {
     return setSelectedPlayer(player.id);
