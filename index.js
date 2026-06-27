@@ -39,6 +39,9 @@ async function getPlayers(url = API + PLAYER_RESOURCE) {
     const res = await fetch(url);
     const data = await res.json();
     players = data.data.players;
+    players.sort((playerA, playerB) => {
+      return playerA.name.localeCompare(playerB.name);
+    });
     render();
   } catch (error) {
     console.log(error);
@@ -115,7 +118,6 @@ async function resetData() {
   );
   if (!input || input.toLowerCase() !== "continue") return alert("No data changed 😌");
   // Reset all data
-  console.log(players);
   players.forEach(async (player) => {
     await deletePlayer(player.id);
   });
@@ -224,8 +226,6 @@ function selectedPlayerComponent() {
     $p.textContent = "Please select a puppy.";
     return $p;
   }
-
-  console.log(selectedPlayer);
 
   const $player = document.createElement("section");
   $player.innerHTML = `
