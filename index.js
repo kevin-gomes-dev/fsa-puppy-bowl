@@ -234,7 +234,7 @@ function selectedPlayerComponent() {
   <p><b>Name</b> ${selectedPlayer.name}</p>
   <p><b>ID</b> ${selectedPlayer.id}</p>
   <p><b>Breed</b> ${selectedPlayer.breed}</p>
-  <p><b>Team</b> ${selectedPlayer.team ? selectedPlayer.team.name : "None"}</p>
+  <p><b>Team</b> ${selectedPlayer.team ? selectedPlayer.team.name : "Unassigned"}</p>
   <p><b>Status</b> ${selectedPlayer.status}</p>
   `;
   $player.querySelector("button").addEventListener("click", () => {
