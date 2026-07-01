@@ -103,6 +103,7 @@ async function deletePlayer(id) {
     await fetch(API + PLAYER_RESOURCE + "/" + id, {
       method: "DELETE",
     });
+    selectedPlayer = null;
     getPlayers();
   } catch (error) {
     console.log(error);
@@ -261,7 +262,6 @@ function selectedPlayerComponent() {
   `;
   $player.querySelector("button").addEventListener("click", () => {
     deletePlayer(selectedPlayer.id);
-    selectedPlayer = null;
   });
 
   return $player;
